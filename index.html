@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fraction Billing Services — Next-Gen Healthcare Billing Software</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#1c86f2;
+    --accent-soft:#eaf3ff;
+    --bg-grad-top:#d0e6f7;
+    --lavender:#ecf5fe;
+    --ink:#0a0a0a;
+    --ink-soft:#5b6472;
+    --ink-faint:#9aa2b1;
+    --pill:#000000;
+    --card:#fcfeff;
+    --border:#e7ebf1;
+    --footer-bg:#161616;
+    --footer-text:#b7bcc4;
+    --footer-muted:#6b7076;
+    --radius-lg:20px;
+    --ease:cubic-bezier(.22,1,.36,1);
+    --font-head:'Poppins',sans-serif;
+    --font-body:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--font-body); color:var(--ink); background:#fff; line-height:1.5; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  img{max-width:100%; display:block;}
+  button{font-family:inherit; cursor:pointer; border:none; background:none;}
+  h1,h2,h3{font-family:var(--font-head);}
+  .wrap{max-width:1200px; margin:0 auto; padding:0 24px;}
+
+  .reveal{opacity:0; transform:translateY(24px); transition:opacity .7s var(--ease), transform .7s var(--ease);}
+  .reveal.in-view{opacity:1; transform:translateY(0);}
+  .stagger > *{opacity:0; transform:translateY(20px); transition:opacity .6s var(--ease), transform .6s var(--ease);}
+  .stagger.in-view > *{opacity:1; transform:translateY(0);}
+  .stagger.in-view > *:nth-child(1){transition-delay:.02s;}
+  .stagger.in-view > *:nth-child(2){transition-delay:.1s;}
+  .stagger.in-view > *:nth-child(3){transition-delay:.18s;}
+  .stagger.in-view > *:nth-child(4){transition-delay:.26s;}
+  .stagger.in-view > *:nth-child(5){transition-delay:.34s;}
+  .stagger.in-view > *:nth-child(6){transition-delay:.42s;}
+
+  /* ================= NAV — fixed, same position always (measured from video) ================= */
+  .nav-outer{position:fixed; top:26px; left:0; right:0; z-index:100; display:flex; justify-content:center; padding:0 20px; pointer-events:none;}
+  .nav{pointer-events:all; width:100%; max-width:1120px; display:flex; align-items:center; justify-content:space-between; background:#fff; border-radius:100px; padding:9px 9px 9px 22px; box-shadow:0 10px 30px rgba(20,26,46,.09);}
+  .brand{display:flex; align-items:center; gap:8px; font-family:var(--font-head); font-weight:700; font-size:16px; letter-spacing:-.01em;}
+  .logo-mark{width:26px; height:26px; flex-shrink:0;}
+  .nav-links{display:flex; align-items:center; gap:28px; font-size:14px; color:var(--ink); font-weight:500;}
+  .nav-links a{display:flex; align-items:center; gap:4px; transition:opacity .2s;}
+  .nav-links a:hover{opacity:.6;}
+  .caret{font-size:9px;}
+  .nav-cta{background:var(--pill); color:#fff; font-size:13.5px; font-weight:600; padding:11px 20px; border-radius:100px; transition:transform .25s var(--ease); white-space:nowrap;}
+  .nav-cta:hover{transform:scale(1.04);}
+  body{padding-top:0;}
+  main, section, footer{position:relative; z-index:1;}
+  @media (max-width:900px){ .nav-links{display:none;} }
+
+  /* ================= HERO ================= */
+  .hero{text-align:center; padding:150px 24px 0; background:radial-gradient(ellipse 1200px 640px at 50% -8%, var(--bg-grad-top), rgba(255,255,255,0) 65%);}
+  .hero h1{font-size:clamp(30px,4.2vw,58px); font-weight:700; letter-spacing:-0.02em; line-height:1.1; max-width:800px; margin:0 auto 22px;}
+  .hero .sub{font-size:clamp(15px,1.05vw,17px); color:var(--ink-soft); max-width:480px; margin:0 auto 28px; line-height:1.6;}
+  .btn-black{display:inline-block; background:var(--pill); color:#fff; font-weight:600; font-size:14.5px; padding:14px 26px; border-radius:100px; transition:transform .25s var(--ease), box-shadow .25s var(--ease); box-shadow:0 8px 20px rgba(0,0,0,.18);}
+  .btn-black:hover{transform:translateY(-2px) scale(1.03); box-shadow:0 14px 28px rgba(0,0,0,.24);}
+
+  .logo-row{display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:48px; max-width:900px; margin:44px auto 0;}
+  .logo-row span{font-family:var(--font-head); font-weight:700; font-size:16px; color:#c7cdd6; letter-spacing:-.01em;}
+
+  .hero-mock-wrap{max-width:1000px; margin:48px auto 0; perspective:1800px;}
+  .hero-mock{background:linear-gradient(150deg,#1c86f2, #4baaf3 55%, #cfe6fb); border-radius:24px; padding:8px; transform:rotateX(8deg) rotateY(-3deg); box-shadow:0 50px 100px -24px rgba(28,134,242,.4); animation:float 6.5s ease-in-out infinite;}
+  @keyframes float{0%,100%{transform:rotateX(8deg) rotateY(-3deg) translateY(0);} 50%{transform:rotateX(6deg) rotateY(-2deg) translateY(-10px);}}
+  .hero-mock-inner{background:#fff; border-radius:18px; padding:0; text-align:left; display:flex; overflow:hidden; min-height:420px;}
+  .mock-sidebar{width:64px; background:var(--lavender); flex-shrink:0; display:flex; flex-direction:column; align-items:center; gap:22px; padding:26px 0;}
+  .mock-sidebar i{width:20px; height:20px; border-radius:5px; background:#c3d3ea;}
+  .mock-sidebar i:first-child{background:var(--ink);}
+  .mock-main{flex:1; padding:26px 30px;}
+  .mock-h{font-family:var(--font-head); font-size:16px; font-weight:600; margin-bottom:16px;}
+  .mock-stats-row{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; border:1px solid var(--border); border-radius:16px; padding:18px; margin-bottom:20px;}
+  .stat-box .lbl{font-size:12px; color:var(--ink-soft); font-weight:600; display:flex; align-items:center; gap:6px; margin-bottom:7px;}
+  .stat-box .val{font-size:24px; font-weight:800; letter-spacing:-.02em; font-family:var(--font-head); display:flex; align-items:baseline; gap:8px;}
+  .delta{font-size:12px; padding:2px 7px; border-radius:100px; font-weight:700;}
+  .delta.up{background:#e4f8ec; color:#1a9a52;}
+  .delta.down{background:#fdeaea; color:#e5484d;}
+  .stat-box .sub{font-size:11px; color:var(--ink-faint); margin-top:2px;}
+  .mock-appt-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;}
+  .mock-dropdown{font-size:12px; border:1px solid var(--border); border-radius:100px; padding:6px 12px; color:var(--ink-soft);}
+  .mock-total{font-size:13px; color:var(--ink-soft); margin-bottom:4px;}
+  .mock-total .big{font-size:26px; font-weight:800; color:var(--ink); font-family:var(--font-head); margin-right:8px;}
+  .mock-line{height:44px;}
+
+  /* ================= SECTION GENERIC ================= */
+  .section{padding:90px 24px;}
+  .section-head{text-align:center; max-width:640px; margin:0 auto 48px;}
+  .section-head h2{font-size:clamp(24px,2.8vw,34px); font-weight:600; letter-spacing:-0.02em;}
+  .section-head p{color:var(--ink-soft); font-size:15px; margin-top:12px;}
+
+  /* ================= 3 TOOL CARDS ================= */
+  .tools3{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:1120px; margin:0 auto;}
+  .tool-card{background:var(--lavender); border-radius:var(--radius-lg); padding:22px; transition:transform .35s var(--ease), box-shadow .35s var(--ease);}
+  .tool-card:hover{transform:translateY(-6px); box-shadow:0 20px 40px rgba(20,26,46,.1);}
+  .tool-eyebrow{font-size:12.5px; font-weight:600; color:var(--ink-faint); margin-bottom:8px;}
+  .tool-card h3{font-size:16.5px; font-weight:600; line-height:1.35; margin-bottom:18px; letter-spacing:-0.01em;}
+  .tool-mock{background:var(--card); border-radius:14px; padding:18px; box-shadow:0 2px 10px rgba(20,26,46,.05);}
+  .rec-title{font-size:14px; font-weight:700; margin-bottom:12px;}
+  .rec-row{display:flex; justify-content:space-between; font-size:12.5px; color:var(--ink-soft); padding:6px 0; border-top:1px solid var(--border);}
+  .rec-row:first-of-type{border-top:none;}
+  .rec-row .v{color:var(--ink); font-weight:600;}
+  .tag-approved{display:inline-block; font-size:11px; font-weight:700; background:#fdf3d6; color:#a8760a; padding:3px 9px; border-radius:100px;}
+  .metric-block{margin-bottom:16px;}
+  .metric-block .lbl{font-size:12px; color:var(--ink-soft); margin-bottom:8px; display:flex; justify-content:space-between;}
+  .arc-wrap{display:flex; align-items:center; gap:12px;}
+  .arc{width:56px; height:32px;}
+  .metric-big{font-size:26px; font-weight:800; font-family:var(--font-head);}
+  .line-chart{height:32px;}
+  .search-bar{display:flex; align-items:center; gap:7px; background:var(--lavender); border-radius:9px; padding:8px 12px; font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;}
+  .filter-pills{display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap;}
+  .filter-pills span{font-size:10.5px; background:var(--lavender); color:var(--ink-soft); padding:4px 9px; border-radius:100px;}
+  .name-row{display:flex; align-items:center; gap:10px; padding:6px 0;}
+  .name-row .av{width:26px; height:26px; border-radius:50%; background:linear-gradient(135deg,var(--accent),#9dc6f9); flex-shrink:0;}
+  .name-row .info .n{font-size:12.5px; font-weight:600;}
+  .name-row .info .r{font-size:10.5px; color:var(--ink-faint);}
+
+  /* ================= IMPACT — pinned feature spotlight ================= */
+  .impact-head{text-align:center; padding:0 24px 40px;}
+  .impact-head h2{font-size:clamp(24px,2.8vw,34px); font-weight:600; letter-spacing:-.02em;}
+  .impact-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:1120px; margin:0 auto; padding:0 24px 90px;}
+  .impact-left{background:linear-gradient(160deg,#0e2a17,#1b5230); border-radius:var(--radius-lg); position:relative; overflow:hidden; min-height:440px;}
+  .schedule-card{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:88%; background:#fff; border-radius:18px; padding:26px; box-shadow:0 30px 60px rgba(0,0,0,.35);}
+  .schedule-card .sh{display:flex; justify-content:space-between; align-items:center; font-size:17px; font-weight:700; margin-bottom:18px;}
+  .schedule-card label{font-size:12px; color:var(--ink-soft); font-weight:600; display:block; margin-bottom:8px; margin-top:16px;}
+  .schedule-card label:first-of-type{margin-top:0;}
+  .tabs{display:flex; gap:8px;}
+  .tabs span{font-size:12.5px; padding:8px 14px; border-radius:9px; border:1px solid var(--border); color:var(--ink-soft);}
+  .tabs span.active{border-color:var(--accent); color:var(--accent); font-weight:600;}
+  .field{border:1px solid var(--border); border-radius:9px; padding:10px 12px; font-size:13px; color:var(--ink);}
+  .chip{display:inline-flex; align-items:center; gap:6px; background:var(--lavender); border-radius:100px; padding:6px 12px; font-size:12.5px;}
+  .chip .av{width:18px; height:18px; border-radius:50%; background:linear-gradient(135deg,var(--accent),#9dc6f9);}
+  .time-row{display:flex; align-items:center; gap:10px;}
+  .time-row .field{flex:1;}
+
+  .impact-right{display:flex; flex-direction:column; gap:14px;}
+  .feat-row{border-radius:var(--radius-lg); padding:26px; transition:all .4s var(--ease); cursor:pointer;}
+  .feat-row.active{background:var(--accent); color:#fff; flex:1.6;}
+  .feat-row:not(.active){background:var(--lavender); color:var(--ink); flex:1; display:flex; align-items:center; gap:16px;}
+  .feat-icon{width:40px; height:40px; border-radius:10px; background:rgba(255,255,255,.2); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;}
+  .feat-row:not(.active) .feat-icon{background:#fff; color:var(--accent);}
+  .feat-row.active .feat-icon{margin-bottom:16px;}
+  .feat-row h3{font-size:18px; font-weight:600; font-family:var(--font-head);}
+  .feat-row.active p{font-size:14px; margin-top:12px; line-height:1.6; opacity:.95; max-width:420px;}
+
+  /* ================= BENTO ================= */
+  .bento-section{background:var(--lavender); padding:90px 24px;}
+  .bento{display:grid; grid-template-columns:1.25fr 1fr; gap:20px; max-width:1120px; margin:0 auto;}
+  .bento-right{display:flex; flex-direction:column; gap:20px;}
+  .bento-card{background:var(--card); border-radius:var(--radius-lg); padding:26px; transition:transform .35s var(--ease), box-shadow .35s var(--ease);}
+  .bento-card:hover{transform:translateY(-5px); box-shadow:0 20px 40px rgba(20,26,46,.08);}
+  .bento-card h3{font-size:17px; font-weight:600; margin-top:18px; margin-bottom:8px; letter-spacing:-.01em;}
+  .bento-card p{font-size:13.5px; color:var(--ink-soft); max-width:300px;}
+  .chat-card{background:var(--lavender); border-radius:12px; padding:18px;}
+  .chat-card .head{display:flex; align-items:center; gap:6px; background:#fff; border-radius:8px; padding:8px 12px; font-size:13px; font-weight:700; margin-bottom:14px; width:fit-content;}
+  .chat-line{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
+  .chat-line .av{width:24px; height:24px; border-radius:50%; background:linear-gradient(135deg,var(--accent),#9dc6f9); flex-shrink:0;}
+  .chat-line .bar{height:8px; border-radius:4px; background:#dfe6f0; flex:1;}
+  .chat-line.blue .bar{background:var(--accent); height:10px;}
+  .badge-doc{display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:700; background:#e4f8ec; color:#1a9a52; padding:5px 12px; border-radius:100px; margin-top:8px;}
+  .node-graphic{display:flex; align-items:center; justify-content:center; gap:12px; height:80px;}
+  .node-dot{width:26px; height:26px; border-radius:50%; background:#d8e3f7;}
+  .node-dot.center{width:44px; height:44px; background:var(--accent); box-shadow:0 0 0 7px var(--accent-soft);}
+  .node-line{width:30px; height:1px; border-top:1px dashed #c7d4e8;}
+  .avatar-graphic{display:flex; align-items:flex-end; justify-content:center; gap:20px; height:80px; position:relative;}
+  .avatar-graphic .av{width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,var(--accent),#9dc6f9); position:relative;}
+  .avatar-graphic .av.center{width:50px; height:50px; margin-bottom:12px;}
+  .avatar-graphic .av::after{content:''; position:absolute; bottom:-16px; left:50%; width:1.5px; height:16px; background:var(--accent); opacity:.5;}
+
+  /* ================= SUPERPOWERS ================= */
+  .icon-grid{display:grid; grid-template-columns:repeat(6,1fr); gap:14px; max-width:900px; margin:0 auto;}
+  .icon-item{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:20px 8px; text-align:center; transition:transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s;}
+  .icon-item:hover{transform:translateY(-4px) scale(1.04); box-shadow:0 12px 26px rgba(20,26,46,.08); border-color:var(--accent);}
+  .icon-item .ic{width:34px; height:34px; margin:0 auto 10px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:14px; color:#fff; font-weight:700;}
+  .icon-item span{font-size:11px; font-weight:600; color:var(--ink-soft);}
+  @media (max-width:760px){.icon-grid{grid-template-columns:repeat(3,1fr);}}
+
+  /* ================= TESTIMONIAL (bonus) ================= */
+  .added-flag{display:block; text-align:center; font-size:13px; color:var(--ink-faint); margin-bottom:30px; font-style:italic;}
+  .testimonial-wrap{max-width:640px; margin:0 auto; text-align:center;}
+  .quote-mark{font-family:var(--font-head); font-size:44px; color:var(--accent-soft); font-weight:800; line-height:.4; margin-bottom:14px; display:block;}
+  .testimonial-wrap p.quote{font-size:17px; font-weight:500; line-height:1.6; margin-bottom:22px;}
+  .quote-author{display:flex; align-items:center; justify-content:center; gap:12px;}
+  .quote-author .av{width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,var(--accent),#9dc6f9);}
+  .quote-author .name{font-weight:700; font-size:13.5px;}
+  .quote-author .role{font-size:12px; color:var(--ink-soft);}
+  .stat-row{display:flex; justify-content:center; gap:48px; margin-top:44px; flex-wrap:wrap;}
+  .stat-item{text-align:center;}
+  .stat-item .num{font-size:26px; font-weight:800; color:var(--accent); font-family:var(--font-head);}
+  .stat-item .lbl{font-size:12.5px; color:var(--ink-soft); margin-top:5px;}
+
+  /* ================= PRICING ================= */
+  .pricing-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:1120px; margin:0 auto;}
+  .price-card{background:var(--lavender); border-radius:var(--radius-lg); padding:28px 26px; transition:transform .35s var(--ease), box-shadow .35s var(--ease);}
+  .price-card:hover{transform:translateY(-6px); box-shadow:0 20px 40px rgba(20,26,46,.1);}
+  .price-card.featured{background:var(--accent); color:#fff;}
+  .price-top{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:18px;}
+  .price-tier{font-size:17px; font-weight:600; font-family:var(--font-head);}
+  .price-amt{font-size:27px; font-weight:800; letter-spacing:-.02em; font-family:var(--font-head);}
+  .price-amt span{font-size:12.5px; font-weight:500; opacity:.7;}
+  .price-group-h{font-size:13.5px; font-weight:700; margin:18px 0 10px;}
+  .price-group-h:first-of-type{margin-top:0;}
+  .price-feat{font-size:13px; padding:5px 0; display:flex; gap:9px; align-items:flex-start;}
+  .price-feat .ck{width:18px; height:18px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:10px; flex-shrink:0; margin-top:1px;}
+  .price-card.featured .price-feat .ck{background:#fff; color:var(--accent);}
+  .price-btn{display:flex; align-items:center; justify-content:center; gap:8px; margin-top:20px; padding:12px; border-radius:100px; font-weight:600; font-size:13.5px; background:var(--accent); color:#fff;}
+  .price-card.featured .price-btn{background:#fff; color:var(--accent);}
+  .price-card:not(.featured) .price-btn{background:var(--accent); color:#fff;}
+  .badge-pop{display:inline-block; font-size:10.5px; font-weight:700; background:#fff; color:var(--accent); padding:3px 11px; border-radius:100px; margin-bottom:4px;}
+
+  /* ================= FAQ ================= */
+  .faq-cols{display:grid; grid-template-columns:1fr 1fr; gap:0 44px; max-width:940px; margin:0 auto;}
+  .faq-item{border-top:1px solid var(--border); padding:18px 0;}
+  .faq-q{display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-weight:600; font-size:15px; gap:16px;}
+  .faq-q .circ{width:22px; height:22px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; transition:transform .3s var(--ease);}
+  .faq-item.open .circ{transform:rotate(45deg);}
+  .faq-a{max-height:0; overflow:hidden; transition:max-height .4s var(--ease), padding-top .4s var(--ease); font-size:13.5px; color:var(--ink-soft); padding-top:0; line-height:1.6;}
+  .faq-item.open .faq-a{max-height:200px; padding-top:12px;}
+
+  /* ================= FINAL CTA ================= */
+  .final-cta{background:linear-gradient(180deg,#fff,var(--lavender)); text-align:center; padding:90px 24px 0;}
+  .final-cta h2{font-size:clamp(26px,3.4vw,44px); font-weight:600; letter-spacing:-.02em; max-width:640px; margin:0 auto 16px;}
+  .final-cta p{color:var(--ink-soft); font-size:15px; margin-bottom:26px;}
+  .tablet-wrap{max-width:720px; margin:52px auto 0;}
+  .tablet{background:#12141a; border-radius:28px; padding:14px; box-shadow:0 60px 110px -30px rgba(10,12,17,.4); animation:float 7s ease-in-out infinite;}
+  .tablet-screen{background:#fff; border-radius:16px; padding:24px;}
+  .tablet-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px;}
+  .tablet-stats .stat-box .val{font-size:20px;}
+  .tablet-bottom{display:grid; grid-template-columns:1.2fr 1fr; gap:14px;}
+  .tablet-list .r{display:flex; justify-content:space-between; font-size:11.5px; padding:7px 0; border-top:1px solid var(--border); color:var(--ink-soft);}
+  .tablet-chart{display:flex; align-items:flex-end; gap:5px; height:60px; background:var(--lavender); border-radius:10px; padding:10px;}
+  .tablet-chart i{flex:1; background:var(--accent); border-radius:2px 2px 0 0; opacity:.55;}
+  .tablet-chart i.hi{opacity:1;}
+
+  /* ================= FOOTER ================= */
+  footer{background:var(--footer-bg); color:var(--footer-text); padding:70px 24px 0; margin-top:90px;}
+  .footer-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:30px; max-width:1120px; margin:0 auto; padding-bottom:38px;}
+  .footer-col h4{font-size:13px; font-weight:700; color:#fff; margin-bottom:16px;}
+  .footer-col li{margin-bottom:11px; font-size:13.5px; color:var(--footer-muted); transition:color .2s; cursor:pointer;}
+  .footer-col li:hover{color:#fff;}
+  .footer-divider{border-top:1px solid rgba(255,255,255,.1); max-width:1120px; margin:0 auto;}
+  .footer-mid{display:flex; justify-content:space-between; gap:44px; max-width:1120px; margin:0 auto; padding:36px 0; flex-wrap:wrap;}
+  .who-we-are h5{font-size:13px; font-weight:700; color:#fff; margin-bottom:8px;}
+  .who-we-are p{font-size:13.5px; color:var(--footer-muted); max-width:380px; line-height:1.6;}
+  .newsletter-block{display:flex; flex-direction:column; align-items:flex-end;}
+  .newsletter-labels{display:flex; justify-content:space-between; width:100%; max-width:320px; margin-bottom:8px;}
+  .newsletter-labels span{font-size:13px; font-weight:700; color:#fff;}
+  .newsletter{display:flex; gap:8px; max-width:320px; width:100%;}
+  .newsletter input{flex:1; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); border-radius:10px; padding:10px 12px; color:#fff; font-size:12.5px;}
+  .newsletter input::placeholder{color:var(--footer-muted);}
+  .newsletter button{display:flex; align-items:center; gap:6px; background:var(--accent); color:#fff; padding:10px 16px; border-radius:10px; font-size:12.5px; font-weight:600; white-space:nowrap;}
+  .footer-brand-row{display:flex; align-items:center; justify-content:space-between; max-width:1120px; margin:0 auto; padding:18px 0 36px; flex-wrap:wrap; gap:20px;}
+  .footer-brand{display:flex; align-items:center; gap:12px;}
+  .footer-brand .logo-mark{width:44px; height:44px;}
+  .footer-brand .wordmark{font-family:var(--font-head); font-size:30px; font-weight:800; color:#fff; letter-spacing:-.01em;}
+  .footer-social{display:flex; align-items:center; gap:14px;}
+  .footer-social span{font-size:12px; color:var(--footer-muted); font-weight:600;}
+  .social-icons{display:flex; gap:10px;}
+  .social-icons a{width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,.07); display:flex; align-items:center; justify-content:center; font-size:12.5px; transition:background .2s;}
+  .social-icons a:hover{background:var(--accent);}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.1); max-width:1120px; margin:0 auto; padding:20px 0 30px; font-size:12px; color:var(--footer-muted); text-align:center;}
+
+  @media (max-width:900px){
+    .tools3{grid-template-columns:1fr;}
+    .bento{grid-template-columns:1fr;}
+    .impact-grid{grid-template-columns:1fr;}
+    .pricing-grid{grid-template-columns:1fr;}
+    .faq-cols{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+    .mock-stats-row{grid-template-columns:1fr;}
+    .footer-mid{flex-direction:column;}
+    .newsletter-block{align-items:flex-start;}
+    .newsletter-labels{max-width:100%;}
+    .tablet-bottom{grid-template-columns:1fr;}
+    .tablet-stats{grid-template-columns:repeat(2,1fr);}
+    .hero{padding-top:150px;}
+    .hero-mock-inner{flex-direction:column;}
+    .mock-sidebar{flex-direction:row; width:100%; padding:14px;}
+  }
+</style>
+</head>
+<body>
+
+<svg style="display:none;">
+  <symbol id="logoSvg" viewBox="0 0 40 40">
+    <path d="M8 24 L16 24 L20 12 L24 30 L28 18 L32 24" fill="none" stroke="#1c86f2" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<!-- ================= NAV ================= -->
+<div class="nav-outer">
+  <div class="nav" id="nav">
+    <div class="brand"><svg class="logo-mark"><use href="#logoSvg"/></svg>Fraction Billing</div>
+    <div class="nav-links">
+      <a href="#tools">All Pages <span class="caret">▾</span></a>
+      <a href="#solutions">Features</a>
+      <a href="#faq">Company</a>
+    </div>
+    <a href="#contact" class="nav-cta">Request A Quote</a>
+  </div>
+</div>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <h1 class="reveal">Next-Gen Software for Healthcare Billing Efficiency</h1>
+  <p class="sub reveal">Purpose-built revenue cycle tools designed to speed up reimbursements and simplify your practice's financial health. Take the first step now.</p>
+  <div class="reveal"><a href="#contact" class="btn-black">Request A Quote</a></div>
+
+  <div class="logo-row reveal">
+    <span>MedCore</span><span>ShifaLink</span><span>SwasthaIQ</span><span>VidaCura</span>
+  </div>
+
+  <div class="hero-mock-wrap reveal">
+    <div class="hero-mock">
+      <div class="hero-mock-inner">
+        <div class="mock-sidebar"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="mock-main">
+          <div class="mock-h">Overview</div>
+          <div class="mock-stats-row">
+            <div class="stat-box"><div class="lbl">Collections</div><div class="val"><span class="count" data-target="256">0</span>k <span class="delta down">↓10.3%</span></div><div class="sub">vs last month</div></div>
+            <div class="stat-box"><div class="lbl">Claims Paid</div><div class="val"><span class="count" data-target="138">0</span>K <span class="delta up">↑25.5%</span></div><div class="sub">vs last month</div></div>
+            <div class="stat-box"><div class="lbl">Denials</div><div class="val"><span class="count" data-target="50">0</span>k <span class="delta down">↓15.4%</span></div><div class="sub">vs last month</div></div>
+          </div>
+          <div class="mock-appt-head">
+            <div class="mock-h" style="margin:0;">Claims</div>
+            <div class="mock-dropdown">Last 7 Days ▾</div>
+          </div>
+          <div class="mock-total"><span class="big">1,500</span><span>Total claims submitted</span></div>
+          <svg class="mock-line" viewBox="0 0 400 44" preserveAspectRatio="none"><polyline points="0,36 40,30 80,34 120,18 160,24 200,10 240,16 280,6 320,14 360,4 400,10" fill="none" stroke="#1c86f2" stroke-width="2.5"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 3 TOOL CARDS ================= -->
+<section class="section" id="tools">
+  <div class="section-head reveal"><h2>Intuitive tools that scale with your practice</h2></div>
+  <div class="tools3 stagger">
+    <div class="tool-card">
+      <div class="tool-eyebrow">Credentialing</div>
+      <h3>Verify payer enrollment faster, reduce delays</h3>
+      <div class="tool-mock">
+        <div class="rec-title">Provider credentialing status</div>
+        <div class="rec-row"><span>Date</span><span class="v">Feb 9, 2025</span></div>
+        <div class="rec-row"><span>Payer</span><span class="v">Aetna</span></div>
+        <div class="rec-row"><span>Status</span><span class="tag-approved">Approved</span></div>
+        <div class="rec-row"><span>Reviewed by</span><span class="v">Jonathan</span></div>
+      </div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-eyebrow">Revenue Cycle Management</div>
+      <h3>Submit clean claims faster, reduce errors</h3>
+      <div class="tool-mock">
+        <div class="metric-block">
+          <div class="lbl"><span>Clean claim rate</span></div>
+          <div class="arc-wrap">
+            <svg class="arc" viewBox="0 0 60 34"><path d="M4 30 A26 26 0 0 1 56 30" fill="none" stroke="#e7ebf1" stroke-width="6"/><path d="M4 30 A26 26 0 0 1 52 14" fill="none" stroke="#1c86f2" stroke-width="6" stroke-linecap="round"/></svg>
+            <span class="metric-big">98%</span>
+          </div>
+        </div>
+        <div class="metric-block">
+          <div class="lbl"><span>Collections</span><span style="color:#1a9a52;font-weight:700;">+24%</span></div>
+          <svg class="line-chart" viewBox="0 0 140 30" preserveAspectRatio="none"><polyline points="0,22 20,18 40,24 60,10 80,14 100,6 120,10 140,2" fill="none" stroke="#1c86f2" stroke-width="2.5"/></svg>
+          <div class="metric-big">$256K</div>
+        </div>
+      </div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-eyebrow">AI-Powered Coding</div>
+      <h3>Automate claim generation, coding suggestions</h3>
+      <div class="tool-mock">
+        <div class="search-bar">🔍 Search: claims</div>
+        <div class="filter-pills"><span>Patients</span><span>Claims</span><span>Providers</span><span>Payers</span></div>
+        <div class="name-row"><div class="av"></div><div class="info"><div class="n">Dr. Alicia Monroe</div><div class="r">Cardiology · Claim approved</div></div></div>
+        <div class="name-row"><div class="av"></div><div class="info"><div class="n">Dr. Marcus Reyes</div><div class="r">Orthopedics · Pending review</div></div></div>
+        <div class="name-row"><div class="av"></div><div class="info"><div class="n">Dr. Priya Nair</div><div class="r">Pediatrics · Claim approved</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= IMPACT — pinned feature spotlight (matches source structure) ================= -->
+<section class="section" style="padding-bottom:0;">
+  <div class="impact-head reveal"><h2>See the impact. Feel the difference.</h2></div>
+</section>
+<div class="impact-grid">
+  <div class="impact-left reveal">
+    <div class="schedule-card">
+      <div class="sh">Add new claim <span style="font-weight:400;color:var(--ink-faint);cursor:pointer;">✕</span></div>
+      <label>Type</label>
+      <div class="tabs"><span class="active">Claim</span><span>Appeal</span><span>Audit</span></div>
+      <label>Title</label>
+      <div class="field">Reviewing Payer Denial — Aetna</div>
+      <label>Assign to</label>
+      <div class="chip"><span class="av"></span> Jonathan M. ✕</div>
+      <label>Date</label>
+      <div class="field">Friday 15, November 2024 📅</div>
+      <label>Time</label>
+      <div class="time-row"><div class="field">9.50 AM</div>→<div class="field">12.00 PM</div></div>
+    </div>
+  </div>
+  <div class="impact-right stagger">
+    <div class="feat-row active">
+      <div class="feat-icon">◆</div>
+      <h3>Claims Communication</h3>
+      <p>Enable real-time communication between billing staff, providers, and payers, fully encrypted for HIPAA compliance.</p>
+    </div>
+    <div class="feat-row"><div class="feat-icon">📅</div><h3>Credentialing scheduling</h3></div>
+    <div class="feat-row"><div class="feat-icon">🧾</div><h3>Billing and invoicing</h3></div>
+  </div>
+</div>
+
+<!-- ================= BENTO ================= -->
+<section class="bento-section" id="solutions">
+  <div class="section-head reveal"><h2>Tools that just make sense</h2></div>
+  <div class="bento stagger">
+    <div class="bento-card">
+      <div class="chat-card">
+        <div class="head"><svg class="logo-mark" style="width:16px;height:16px;"><use href="#logoSvg"/></svg>Claims Review</div>
+        <div class="chat-line blue"><div class="av"></div><div class="bar" style="width:60%;flex:none;"></div></div>
+        <div class="chat-line"><div class="av"></div><div class="bar"></div></div>
+        <div class="chat-line"><div class="av"></div><div class="bar"></div></div>
+        <div class="chat-line"><div class="av"></div><div class="bar"></div></div>
+        <span class="badge-doc">✓ Billing Specialist</span>
+      </div>
+      <h3>Practice analytics dashboard</h3>
+      <p>Track and log claims, payer communication, and reimbursement activity in real time.</p>
+    </div>
+    <div class="bento-right">
+      <div class="bento-card">
+        <div class="node-graphic">
+          <div class="node-dot"></div><div class="node-line"></div><div class="node-dot"></div><div class="node-line"></div>
+          <div class="node-dot center"></div>
+          <div class="node-line"></div><div class="node-dot"></div><div class="node-line"></div><div class="node-dot"></div>
+        </div>
+        <h3>Automated reminders</h3>
+        <p>Automatic nudges for claim resubmissions and patient balances.</p>
+      </div>
+      <div class="bento-card">
+        <div class="avatar-graphic">
+          <div class="av"></div><div class="av"></div><div class="av center"></div><div class="av"></div><div class="av"></div>
+        </div>
+        <h3>Staff scheduling</h3>
+        <p>Coordinate billing team coverage and credentialing timelines with ease.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SUPERPOWERS ================= -->
+<section class="section">
+  <div class="section-head reveal"><h2>Add superpowers to your billing workflow</h2></div>
+  <div class="icon-grid stagger">
+    <div class="icon-item"><div class="ic" style="background:#2853ff;">A</div><span>athenaOne Sync</span></div>
+    <div class="icon-item"><div class="ic" style="background:#16a34a;">C</div><span>ClaimMD Connect</span></div>
+    <div class="icon-item"><div class="ic" style="background:#f59e0b;">Av</div><span>Availity Bridge</span></div>
+    <div class="icon-item"><div class="ic" style="background:#ef4444;">W</div><span>Waystar Link</span></div>
+    <div class="icon-item"><div class="ic" style="background:#8b5cf6;">P</div><span>pVerify Check</span></div>
+    <div class="icon-item"><div class="ic" style="background:#0ea5e9;">Ch</div><span>Change HC Relay</span></div>
+    <div class="icon-item"><div class="ic" style="background:#14b8a6;">K</div><span>Kareo Bridge</span></div>
+    <div class="icon-item"><div class="ic" style="background:#e11d48;">D</div><span>DrChrono Sync</span></div>
+    <div class="icon-item"><div class="ic" style="background:#6366f1;">N</div><span>NueMD Connect</span></div>
+    <div class="icon-item"><div class="ic" style="background:#0891b2;">E</div><span>eCW Link</span></div>
+    <div class="icon-item"><div class="ic" style="background:#65a30d;">T</div><span>TriZetto Gateway</span></div>
+    <div class="icon-item"><div class="ic" style="background:#f97316;">O</div><span>Office Ally Sync</span></div>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIAL (bonus, flagged) ================= -->
+<section class="section" style="background:var(--lavender);">
+  <span class="added-flag reveal">— kept from your original site's real content; not part of the Healthier template flow —</span>
+  <div class="testimonial-wrap reveal">
+    <span class="quote-mark">"</span>
+    <p class="quote">We struggled with complex billing issues for years, but Fraction Billing Services provided the steadfast support we needed. Their team is knowledgeable, responsive, and truly cares about our success.</p>
+    <div class="quote-author"><div class="av"></div><div style="text-align:left;"><div class="name">Thompson</div><div class="role">Practice Owner</div></div></div>
+  </div>
+  <div class="stat-row stagger">
+    <div class="stat-item"><div class="num">3+</div><div class="lbl">Years in medical billing</div></div>
+    <div class="stat-item"><div class="num">99%</div><div class="lbl">Clean claims, first submission</div></div>
+    <div class="stat-item"><div class="num">24/7</div><div class="lbl">Support availability</div></div>
+    <div class="stat-item"><div class="num">30%</div><div class="lbl">Avg. increase in collections</div></div>
+  </div>
+</section>
+
+<!-- ================= PRICING (exact structure from video: $59 / $69 / $79) ================= -->
+<section class="section" id="pricing">
+  <div class="section-head reveal"><h2>Honest pricing for real growth</h2></div>
+  <div class="pricing-grid stagger">
+    <div class="price-card">
+      <div class="price-top"><div class="price-tier">Starter</div><div class="price-amt">$59<span>/month</span></div></div>
+      <div class="price-group-h">Access to:</div>
+      <div class="price-feat"><span class="ck">✓</span>Flexible practice access &amp; customizable rules</div>
+      <div class="price-feat"><span class="ck">✓</span>Core claims &amp; RCM management</div>
+      <div class="price-feat"><span class="ck">✓</span>Standard credentialing support</div>
+      <div class="price-feat"><span class="ck">✓</span>Encrypted communication channels</div>
+      <div class="price-group-h">Includes:</div>
+      <div class="price-feat"><span class="ck">✓</span>Dynamic user access &amp; management</div>
+      <div class="price-feat"><span class="ck">✓</span>Integrated claims record system</div>
+      <div class="price-feat"><span class="ck">✓</span>Effortless scheduling solutions</div>
+      <a href="#contact" class="price-btn">Request A Quote →</a>
+    </div>
+    <div class="price-card featured">
+      <span class="badge-pop">Most popular</span>
+      <div class="price-top"><div class="price-tier">Growth</div><div class="price-amt">$69<span>/month</span></div></div>
+      <div class="price-group-h">Everything in Starter, plus:</div>
+      <div class="price-feat"><span class="ck">✓</span>Scalable multi-provider access &amp; admin privileges</div>
+      <div class="price-feat"><span class="ck">✓</span>Full medical coding &amp; billing</div>
+      <div class="price-feat"><span class="ck">✓</span>Denial management &amp; appeals</div>
+      <div class="price-feat"><span class="ck">✓</span>Confidential payer messaging</div>
+      <div class="price-group-h">Access to:</div>
+      <div class="price-feat"><span class="ck">✓</span>Unlimited claim profiles &amp; admin settings</div>
+      <div class="price-feat"><span class="ck">✓</span>Advanced reimbursement analytics</div>
+      <div class="price-feat"><span class="ck">✓</span>24/7 priority support</div>
+      <a href="#contact" class="price-btn">Request A Quote →</a>
+    </div>
+    <div class="price-card">
+      <div class="price-top"><div class="price-tier">Pro</div><div class="price-amt">$79<span>/month</span></div></div>
+      <div class="price-group-h">Everything in Growth, plus:</div>
+      <div class="price-feat"><span class="ck">✓</span>Limitless user roles &amp; administrative access</div>
+      <div class="price-feat"><span class="ck">✓</span>Next-gen practice analytics dashboard</div>
+      <div class="price-feat"><span class="ck">✓</span>Dedicated account manager</div>
+      <div class="price-feat"><span class="ck">✓</span>Secure patient &amp; payer messaging</div>
+      <div class="price-group-h">Access to:</div>
+      <div class="price-feat"><span class="ck">✓</span>Unlimited accounts &amp; role permissions</div>
+      <div class="price-feat"><span class="ck">✓</span>Custom system integrations</div>
+      <div class="price-feat"><span class="ck">✓</span>Seamless multi-location management</div>
+      <a href="#contact" class="price-btn">Request A Quote →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="section" style="background:var(--lavender);" id="faq">
+  <div class="section-head reveal"><h2>Quick answers for quick decisions</h2></div>
+  <div class="faq-cols reveal">
+    <div>
+      <div class="faq-item open">
+        <div class="faq-q">What is Fraction Billing used for? <span class="circ">+</span></div>
+        <div class="faq-a">Our platform streamlines medical billing workflows by offering credentialing, claims submission, coding, and reimbursement tracking all in one secure, cloud-based system.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is Fraction Billing HIPAA-compliant? <span class="circ">+</span></div>
+        <div class="faq-a">Yes. Every process is built around 100% HIPAA-compliant practices, from data handling to claims transmission.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can multiple providers use the same account? <span class="circ">+</span></div>
+        <div class="faq-a">Yes — Growth and Pro plans support multi-provider groups with shared reporting and separate billing profiles.</div>
+      </div>
+    </div>
+    <div>
+      <div class="faq-item">
+        <div class="faq-q">Can I access the system from mobile devices? <span class="circ">+</span></div>
+        <div class="faq-a">Yes, the practice analytics dashboard is fully responsive, so you can check collections and claim status from any device.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Do you offer training or onboarding support? <span class="circ">+</span></div>
+        <div class="faq-a">Every new practice gets a guided onboarding session and ongoing training as our tools and your team evolve.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What kind of customer support do you offer? <span class="circ">+</span></div>
+        <div class="faq-a">24/7 support with a real response time — underserved practices can't afford to wait on hold.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FINAL CTA ================= -->
+<section class="final-cta">
+  <h2 class="reveal">Turn your growth ideas into reality today</h2>
+  <p class="reveal">Request a free billing audit today. No commitment required.</p>
+  <div class="reveal"><a href="#contact" class="btn-black" id="contact">Request A Quote</a></div>
+
+  <div class="tablet-wrap reveal">
+    <div class="tablet">
+      <div class="tablet-screen">
+        <div class="mock-appt-head" style="margin-bottom:16px;">
+          <div class="brand" style="font-size:15px;"><svg class="logo-mark" style="width:18px;height:18px;"><use href="#logoSvg"/></svg>Fraction Billing</div>
+          <div style="display:flex;gap:5px;"><div style="width:6px;height:6px;border-radius:50%;background:var(--border);"></div><div style="width:6px;height:6px;border-radius:50%;background:var(--border);"></div><div style="width:6px;height:6px;border-radius:50%;background:var(--border);"></div></div>
+        </div>
+        <div class="tablet-stats">
+          <div class="stat-box"><div class="lbl">Collections</div><div class="val">$256k</div></div>
+          <div class="stat-box"><div class="lbl">Claims</div><div class="val">$138K</div></div>
+          <div class="stat-box"><div class="lbl">Pending</div><div class="val">$50k</div></div>
+          <div class="stat-box"><div class="lbl">Denials</div><div class="val">1200</div></div>
+        </div>
+        <div class="tablet-bottom">
+          <div class="tablet-list">
+            <div class="r"><span>Aetna — Claim #10234</span><span>Paid</span></div>
+            <div class="r"><span>Cigna — Claim #10235</span><span>Pending</span></div>
+            <div class="r"><span>BCBS — Claim #10236</span><span>Paid</span></div>
+            <div class="r"><span>UHC — Claim #10237</span><span>Denied</span></div>
+          </div>
+          <div class="tablet-chart">
+            <i style="height:35%"></i><i style="height:55%"></i><i class="hi" style="height:80%"></i><i style="height:45%"></i><i style="height:65%"></i><i style="height:50%"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col"><h4>Get Started</h4><ul><li>Home</li><li>About Us</li><li>Services</li><li>Contact</li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li>Pricing</li><li>About Us</li><li>Privacy Policy</li><li>Careers</li></ul></div>
+    <div class="footer-col"><h4>Resources</h4><ul><li>Blog</li><li>Case Studies</li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li>Contact</li><li>Help Center</li><li>FAQs</li></ul></div>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-mid">
+    <div class="who-we-are">
+      <h5>Who we are</h5>
+      <p>Fraction Billing Services is on a mission to alleviate complex billing workflows, optimize cash flow, and eliminate the administrative burdens healthcare providers face every day.</p>
+    </div>
+    <div class="newsletter-block">
+      <div class="newsletter-labels"><span>Newsletter</span><span>Stay up to date</span></div>
+      <div class="newsletter"><input type="email" placeholder="Enter your email address"><button>Request A Quote →</button></div>
+    </div>
+  </div>
+  <div class="footer-brand-row">
+    <div class="footer-brand"><svg class="logo-mark"><use href="#logoSvg"/></svg><span class="wordmark">Fraction Billing</span></div>
+    <div class="footer-social">
+      <span>Social Handle</span>
+      <div class="social-icons"><a href="#">f</a><a href="#">▶</a><a href="#">in</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Fraction Billing Services. All Rights Reserved.</div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in-view'); io.unobserve(e.target); } });
+  }, {threshold:0.15});
+  document.querySelectorAll('.reveal, .stagger').forEach(el=>io.observe(el));
+
+  const counters = document.querySelectorAll('.count');
+  const countIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const el = e.target; const target = parseFloat(el.dataset.target);
+        let cur = 0; const step = target/50;
+        const timer = setInterval(()=>{
+          cur += step; if(cur >= target){cur = target; clearInterval(timer);}
+          el.textContent = Math.round(cur);
+        }, 16);
+        countIO.unobserve(el);
+      }
+    });
+  }, {threshold:0.4});
+  counters.forEach(c=>countIO.observe(c));
+
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    item.querySelector('.faq-q').addEventListener('click', ()=>{
+      const wasOpen = item.classList.contains('open');
+      item.parentElement.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+      if(!wasOpen) item.classList.add('open');
+    });
+  });
+
+  // scroll-linked active state for the impact feature rows
+  const featRows = document.querySelectorAll('.feat-row');
+  const impactGrid = document.querySelector('.impact-grid');
+  if(impactGrid){
+    impactGrid.addEventListener('click', (e)=>{
+      const row = e.target.closest('.feat-row');
+      if(!row) return;
+      featRows.forEach(r=>r.classList.remove('active'));
+      row.classList.add('active');
+    });
+  }
+</script>
+</body>
+</html>
